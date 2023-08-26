@@ -3,12 +3,15 @@
   "name": "Focus Website Whitelist",
   "version": "1.0.1",
 
-  "action": {
-    "default_title": "Click to view a popup",
-    "default_popup": "index.html"
-  },
+  "content_scripts": [
+	{
+		"matches": [
+			"https://twitter.com/*"
+		],
+		"js": ["app.js"]
+	}
+  ],
   
   "description": "An easy way to block distracting websites to ensure that",
-
   "author": "hdiambrosio@gmail.com"
 }
