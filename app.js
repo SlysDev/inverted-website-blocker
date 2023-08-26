@@ -1,5 +1,3 @@
-console.log("Exstention loaded");
-
 const blockwall = document.createElement("div");
 blockwall.style.top = "0px";
 blockwall.style.bottom = "0px";

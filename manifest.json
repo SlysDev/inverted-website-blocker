@@ -1,17 +1,23 @@
 {
-  "manifest_version": 3,
-  "name": "Focus Website Whitelist",
-  "version": "1.0.1",
-
-  "content_scripts": [
-	{
-		"matches": [
-			"https://twitter.com/*"
-		],
-		"js": ["app.js"]
-	}
-  ],
-  
-  "description": "An easy way to block distracting websites to ensure that",
-  "author": "hdiambrosio@gmail.com"
+	"manifest_version": 3,
+	"name": "Focus Website Whitelist",
+	"version": "1.0.1",
+	"permissions": [
+		"storage",
+		"webNavigation"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"https://twitter.com/*"
+			],
+			"js": ["app.js"]
+		}
+	],
+	"background": {
+		"service_worker": "service_worker.js",
+		"type": "module"
+	},
+	"description": "An easy way to block distracting websites to ensure that",
+	"author": "hdiambrosio@gmail.com"
 }
