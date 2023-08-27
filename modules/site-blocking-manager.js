@@ -6,7 +6,8 @@ let siteBlockingManager = (function () {
         document.querySelector("body").appendChild(createBlockScreen());
     };
     let checkBlockLists = function () {
-        if (window.location.hostname === "www.discord.com") {
+        if (window.location.hosteame) {
+			console.log(window.location.hostname)
             blockSite();
         }
     };
