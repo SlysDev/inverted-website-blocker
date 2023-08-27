@@ -5,7 +5,7 @@ let chromeSync;
 (async () => {
 	console.log("Getting storage sync");
 	let sync = await chrome.storage.sync.get();
-	if(sync) {
+	if(sync.lists) {
 		console.log("Sync found");
 		chromeSync = {...sync};
 	} else {
@@ -13,7 +13,7 @@ let chromeSync;
 		chromeSync = {
 			lists: [
 				{
-					websites: ["*://*twitter*/*"],
+					websites: ["*://twitter.com/*"],
 					name: "Default",
 					isWhitelist: false
 				}
@@ -32,27 +32,26 @@ chrome.storage.sync.onChanged.addListener(async (result) => {
 	chromeSync = await chrome.storage.sync.get();
 });
 
-chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
 	console.log("Getting whitelisted URLS...");
 	const synchedLists = chromeSync.lists;
 	const activatedList = synchedLists[chromeSync.activatedIndex];
 
-	for(let i = 0; i < activatedList.websites.length; i++) {
-		let regex = new RegExp(activatedList.websites[i]);
-		if(regex.test(details.url)) {
-			blockCurrentTab();
-		}
-	}
+	let blockedTabs = await chrome.tabs.query({ url: activatedList.websites })
+	let blockedTabIds = blockedTabs.map(tab => tab.id );
+
 });
 
-function blockCurrentTab(){
-	// This shit dont work and I'm pretty sure this is the wrong apporach
-	/* const scriptInjection = {
-		func: function() {
-			console.log(window);
-			console.log(document);
-		},
-		injectImmediately: false,
+async function blockCurrentTab(){
+	console.log("blocking tab")
+	/* const CSSInjection = {
+		css: "* {background-color: red;}",
+		target:  
 	};
-	chrome.scripting.executeScript(scriptInjection); */
+	chrome.scripting.insertCSS(CSSInjection,
+		(result) => {
+			console.log("Injection completed. Printing passes args: ");
+	:w		conosle.log(result);
+		}
+	); */
 }
