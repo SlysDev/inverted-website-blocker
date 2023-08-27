@@ -13,7 +13,7 @@ let chromeSync;
 		chromeSync = {
 			lists: [
 				{
-					websites: ["twitter", "youtu"],
+					websites: ["*://*twitter*/*"],
 					name: "Default",
 					isWhitelist: false
 				}
