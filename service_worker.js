@@ -37,11 +37,8 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
 	const synchedLists = chromeSync.lists;
 	const activatedList = synchedLists[chromeSync.activatedIndex];
 
-	const toBeBlockedTabs = await chrome.tabs.query(
-		{
-			url: activatedList.websites
-		}
-	);
+	let blockedTabs = await chrome.tabs.query({ url: activatedList.websites })
+	let blockedTabsIds = blockedTabs
 	console.log(toBeBlockedTabs);
 	/* for(let i = 0; i < activatedList.websites.length; i++) {
 		let regex = new RegExp(activatedList.websites[i]);
