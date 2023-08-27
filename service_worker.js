@@ -1,43 +1,58 @@
 console.log("Background loaded");
-// For an introduct into what service_workers are and what they do see https://developer.chrome.com/docs/extensions/mv3/service_workers/
-	// For a list of events that can occur in here see https://developer.chrome.com/docs/extensions/mv3/service_workers/events/
-	// Web navigation permission https://developer.chrome.com/docs/extensions/reference/webNavigation/
-
-chrome.runtime.onInstalled.addListener(({ reason }) => {
-	if (reason === 'install') {
-		console.log("Extensions installed");
-		console.log("Creating whitelist...");
-		chrome.storage.sync.set({
+	
+// Loads lists from the sync of theyre there, otherwise creates a new 
+let chromeSync;
+(async () => {
+	console.log("Getting storage sync");
+	let sync = await chrome.storage.sync.get();
+	if(sync) {
+		console.log("Sync found");
+		chromeSync = {...sync};
+	} else {
+		console.log("No sync found, creating sync");
+		chromeSync = {
 			lists: [
 				{
 					websites: ["twitter", "youtu"],
 					name: "Default",
 					isWhitelist: false
 				}
-			]
-		});
+			],
+			activatedIndex: 0
+		};
+		chrome.storage.sync.set({...chromeSync});
 	}
+	console.log(chromeSync);
+})();
+
+
+chrome.storage.sync.onChanged.addListener(async (result) => {
+	console.log("Storage synch changed: ");
+	console.log(result);
+	chromeSync = await chrome.storage.sync.get();
 });
 
 chrome.webNavigation.onBeforeNavigate.addListener((details) => {
-	// https://stackoverflow.com/questions/12065029/redirecting-url-in-a-chrome-extension
+	console.log("Getting whitelisted URLS...");
+	const synchedLists = chromeSync.lists;
+	const activatedList = synchedLists[chromeSync.activatedIndex];
+
+	for(let i = 0; i < activatedList.websites.length; i++) {
+		let regex = new RegExp(activatedList.websites[i]);
+		if(regex.test(details.url)) {
+			blockCurrentTab();
+		}
+	}
 });
 
-
-
-
-
-	/* chrome.storage.sync.get("lists").then((result) => {
-		console.log("Getting whitelisted URLS...");
-		let activeList = result.lists[0];
-		for(let i = 0; i < activeList.websites.length; i++) {
-			let rgx = new RegExp("^https?:\/\/" + activeList.websites[i] + "[^\/]+");
-			console.log(rgx);
-			console.log(details.url);
-			console.log(rgx.test(details.url));
-			if(rgc.test(details.url)) {
-				console.log("Blocked website " + details.url + " from loading");
-				return {redirectUrl: }
-			}
-		}
-	}) */
+function blockCurrentTab(){
+	// This shit dont work and I'm pretty sure this is the wrong apporach
+	/* const scriptInjection = {
+		func: function() {
+			console.log(window);
+			console.log(document);
+		},
+		injectImmediately: false,
+	};
+	chrome.scripting.executeScript(scriptInjection); */
+}

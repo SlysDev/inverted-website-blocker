@@ -4,7 +4,8 @@
 	"version": "1.0.1",
 	"permissions": [
 		"storage",
-		"webNavigation"
+		"webNavigation",
+		"scripting"
 	],
 	"background": {
 		"service_worker": "service_worker.js",
