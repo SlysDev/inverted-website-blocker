@@ -1,17 +1,22 @@
 html::after {
 	content: "!!BLOCKED!!";
 	position: absolute;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	font-family: monospace;
 	font-weight: bold;
+	color: black;
 	font-size: 8rem;
-	padding-top: auto;
-	padding-bottom: auto;
 	text-align: center;
 	background: radial-gradient(circle, rgba(238, 147, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 	border: solid black 10px;
+}
+
+body {
+	display: none;
 }

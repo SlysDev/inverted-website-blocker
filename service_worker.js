@@ -1,5 +1,5 @@
-import { getUserData } from "./comp/getUserData.js"
-import { updateTabs } from "./comp/updateTabs.js";
+import { getUserData } from "./src/getUserData.js"
+import { updateTabs } from "./src/updateTabs.js";
 
 // Loads synched data into chromeSync if there is any
 // Creates new data and sends to chrome.storage.sync if theres is no
@@ -16,7 +16,6 @@ let chromeSync;
 // 	console.log(result);
 // 	chromeSync = await chrome.storage.sync.get();
 // });
-
 
 // This code runs when the user opens a new tab and will get all the URLS with
 // "blocked" status and store them in blockedTabs before giving their tab ids

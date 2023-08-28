@@ -5,12 +5,16 @@ const getUserData = async () => {
 		sync = {
 			lists: [
 				{
-					websites: ["*://twitter.com/*", "*://*.youtube.com/*"],
+					websites: [
+						"*://twitter.com/*",
+						"*://*.youtube.com/*",
+						"*://*.reddit.com/*"
+					],
 					name: "Default",
 					isWhitelist: false
 				}
 			],
-			activatedIndex: 0
+			activateIndex: 0
 		};
 		chrome.storage.sync.set({...sync});
 	}

@@ -1,4 +1,4 @@
-import createBlockScreen from "../components/block-screen";
+import createBlockScreen from "../src/block-screen";
 
 let siteBlockingManager = (function () {
     let blockSite = () => {
