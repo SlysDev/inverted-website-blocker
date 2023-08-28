@@ -1,6 +1,15 @@
 console.log("Background loaded");
 	
-// Loads lists from the sync of theyre there, otherwise creates a new 
+const blockTab = (tabId) => {
+	const CSSInjection = {
+		css: "* { background: red; }",
+		target: {
+			tabId: tabId
+		} 
+	};
+	chrome.scripting.insertCSS(CSSInjection);
+}
+
 let chromeSync;
 (async () => {
 	console.log("Getting storage sync");
@@ -32,26 +41,15 @@ chrome.storage.sync.onChanged.addListener(async (result) => {
 	chromeSync = await chrome.storage.sync.get();
 });
 
-chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
+
+chrome.webNavigation.onDOMContentLoaded.addListener(async () => {
 	console.log("Getting whitelisted URLS...");
 	const synchedLists = chromeSync.lists;
 	const activatedList = synchedLists[chromeSync.activatedIndex];
 
 	let blockedTabs = await chrome.tabs.query({ url: activatedList.websites })
-	let blockedTabIds = blockedTabs.map(tab => tab.id );
-
+	for(let i = 0; i < blockedTabs.length; i++) {
+		blockTab(blockedTabs[i].id)
+	}
 });
 
-async function blockCurrentTab(){
-	console.log("blocking tab")
-	/* const CSSInjection = {
-		css: "* {background-color: red;}",
-		target:  
-	};
-	chrome.scripting.insertCSS(CSSInjection,
-		(result) => {
-			console.log("Injection completed. Printing passes args: ");
-	:w		conosle.log(result);
-		}
-	); */
-}
