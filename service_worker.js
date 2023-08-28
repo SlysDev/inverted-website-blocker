@@ -1,55 +1,29 @@
-console.log("Background loaded");
-	
-const blockTab = (tabId) => {
-	const CSSInjection = {
-		css: "* { background: red; }",
-		target: {
-			tabId: tabId
-		} 
-	};
-	chrome.scripting.insertCSS(CSSInjection);
-}
+import { getUserData } from "./comp/getUserData.js"
+import { updateTabs } from "./comp/updateTabs.js";
+
+// Loads synched data into chromeSync if there is any
+// Creates new data and sends to chrome.storage.sync if theres is no
+// data already there
 
 let chromeSync;
-(async () => {
-	console.log("Getting storage sync");
-	let sync = await chrome.storage.sync.get();
-	if(sync.lists) {
-		console.log("Sync found");
-		chromeSync = {...sync};
-	} else {
-		console.log("No sync found, creating sync");
-		chromeSync = {
-		lists: [
-				{
-					websites: ["*://twitter.com/*"],
-					name: "Default",
-					isWhitelist: false
-				}
-			],
-			activatedIndex: 0
-		};
-		chrome.storage.sync.set({...chromeSync});
-	}
-	console.log(chromeSync);
-})();
+(async () => { chromeSync = await getUserData(); })();
+
+// This actually does nothing as of now but thought it might save from hiccoughs
+// later. It's designed to reload synched data if it ends up changing.
+
+// chrome.storage.sync.onChanged.addListener(async (result) => {
+// 	console.log("Storage synch changed: ");
+// 	console.log(result);
+// 	chromeSync = await chrome.storage.sync.get();
+// });
 
 
-chrome.storage.sync.onChanged.addListener(async (result) => {
-	console.log("Storage synch changed: ");
-	console.log(result);
-	chromeSync = await chrome.storage.sync.get();
-});
+// This code runs when the user opens a new tab and will get all the URLS with
+// "blocked" status and store them in blockedTabs before giving their tab ids
+// to blockTab to have css injected
 
-
-chrome.webNavigation.onDOMContentLoaded.addListener(async () => {
-	console.log("Getting whitelisted URLS...");
-	const synchedLists = chromeSync.lists;
-	const activatedList = synchedLists[chromeSync.activatedIndex];
-
-	let blockedTabs = await chrome.tabs.query({ url: activatedList.websites })
-	for(let i = 0; i < blockedTabs.length; i++) {
-		blockTab(blockedTabs[i].id)
-	}
+chrome.webNavigation.onDOMContentLoaded.addListener(() => {
+	const activatedList = chromeSync.lists[chromeSync.activatedIndex];
+	updateTabs(activatedList)
 });
 
