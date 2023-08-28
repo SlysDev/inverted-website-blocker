@@ -26,4 +26,3 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
 	const activatedList = chromeSync.lists[chromeSync.activatedIndex];
 	updateTabs(activatedList)
 });
-
