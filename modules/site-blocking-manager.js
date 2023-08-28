@@ -1,4 +1,5 @@
 import createBlockScreen from "../components/block-screen";
+import websiteFiltersManager from "./website-filters-manager";
 
 let siteBlockingManager = (function () {
     let blockSite = () => {
@@ -6,8 +7,12 @@ let siteBlockingManager = (function () {
         document.querySelector("body").appendChild(createBlockScreen());
     };
     let checkBlockLists = function () {
-        if (window.location.hosteame) {
-			console.log(window.location.hostname)
+        if (
+            websiteFiltersManager.selectedFilter.websites.contains(
+                window.location.hostname
+            )
+        ) {
+            console.log("Blocking " + window.location.hostname);
             blockSite();
         }
     };

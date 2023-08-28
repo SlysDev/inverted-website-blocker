@@ -2,6 +2,7 @@ import FilterList from "../models/filter-list.js";
 
 let websiteFiltersManager = (() => {
     let filterList = [];
+    let selectedFilter;
     const findFilterList = (listName) => {
         try {
             return filterList[

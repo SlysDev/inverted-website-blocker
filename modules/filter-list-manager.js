@@ -1,5 +1,4 @@
 let filterListManager = (() => {
-    let selectedFilter;
     const addWebsite = (websiteUrl) => {
         selectedFilter.websites.push(websiteUrl);
     };
