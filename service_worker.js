@@ -20,7 +20,7 @@ let chromeSync;
 	} else {
 		console.log("No sync found, creating sync");
 		chromeSync = {
-			lists: [
+		lists: [
 				{
 					websites: ["*://twitter.com/*"],
 					name: "Default",
