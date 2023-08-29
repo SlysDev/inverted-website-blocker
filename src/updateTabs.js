@@ -5,7 +5,6 @@ const updateTabs = async (activatedList) => {
 		url: activatedList.websites
 	});
 	for(let i = 0; i < blockedTabs.length; i++) {
-		console.log(`Blockng id ${blockedTabs[i].id}`);
 		blockTab(blockedTabs[i].id)
 	}
 }

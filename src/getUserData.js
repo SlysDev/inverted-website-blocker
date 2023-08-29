@@ -14,7 +14,8 @@ const getUserData = async () => {
 					isWhitelist: false
 				}
 			],
-			activateIndex: 0
+			activatedIndex: 0,
+			isBlocking: false
 		};
 		chrome.storage.sync.set({...sync});
 	}

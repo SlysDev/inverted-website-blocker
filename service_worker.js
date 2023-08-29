@@ -11,17 +11,18 @@ let chromeSync;
 // This actually does nothing as of now but thought it might save from hiccoughs
 // later. It's designed to reload synched data if it ends up changing.
 
-// chrome.storage.sync.onChanged.addListener(async (result) => {
-// 	console.log("Storage synch changed: ");
-// 	console.log(result);
-// 	chromeSync = await chrome.storage.sync.get();
-// });
+chrome.storage.sync.onChanged.addListener(async (result) => {
+	chromeSync = await chrome.storage.sync.get();
+});
 
 // This code runs when the user opens a new tab and will get all the URLS with
 // "blocked" status and store them in blockedTabs before giving their tab ids
 // to blockTab to have css injected
 
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
-	const activatedList = chromeSync.lists[chromeSync.activatedIndex];
-	updateTabs(activatedList)
+	if(chromeSync.isBlocking) {
+		const activatedList = chromeSync.lists[chromeSync.activatedIndex];
+		console.log(chromeSync.activatedIndex);
+		updateTabs(activatedList);
+	}
 });
