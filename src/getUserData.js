@@ -1,4 +1,3 @@
-
 const getUserData = async () => {
 	let sync = await chrome.storage.sync.get();
 	if(!sync.lists) {
@@ -11,7 +10,7 @@ const getUserData = async () => {
 						"*://*.reddit.com/*"
 					],
 					name: "Default",
-					isWhitelist: false
+					isWhitelist: true
 				}
 			],
 			activatedIndex: 0,
