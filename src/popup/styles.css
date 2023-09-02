@@ -1,3 +1,17 @@
 h1 {
 	text-align: center;
+	width: max-content;
+}
+
+.preset {
+	margin: 0.25rem;
+	border: solid black 1px;
+	border-radius: 5px;
+	width: auto;
+}
+
+.presetsContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
