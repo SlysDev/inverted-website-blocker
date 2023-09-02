@@ -13,6 +13,8 @@ let chromeSync;
 
 chrome.storage.sync.onChanged.addListener(async (result) => {
 	chromeSync = await chrome.storage.sync.get();
+	let activatedLists = chromeSync.lists[chromeSync.activatedIndex];
+	updateTabs(activatedLists);
 });
 
 // This code runs when the user opens a new tab and will get all the URLS with
@@ -26,3 +28,18 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
 		updateTabs(activatedList);
 	}
 });
+
+chrome.runtime.onMessage.addListener(request => {
+	switch(request.msg) {
+		case "addCurrentURL":
+			addCurrentURL();
+			break;
+	}
+});
+
+async function addCurrentURL() {
+	const tab = await chrome.tabs.query({ active: true, currentWindow: true });
+	let url = "*://" + (tab[0].url.split("//")[1].split("/")[0]) + "/*";
+	chromeSync.lists[chromeSync.activatedIndex].websites.push(url);
+	chrome.storage.sync.set({...chromeSync});
+}

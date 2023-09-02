@@ -12,4 +12,3 @@ let chromeSync;
 
 chrome.storage.sync.onChanged.addListener(updateChromeSync);
 updateChromeSync();
-
